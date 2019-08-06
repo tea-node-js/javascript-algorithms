@@ -1,5 +1,5 @@
-import LinkedListNode from "./LinkedListNode";
-import Comparator from "../../utils/comparator/Comparator";
+import LinkedListNode from './LinkedListNode';
+import Comparator from '../../utils/comparator/Comparator';
 
 export default class LinkedList {
   constructor(comparatorFunction) {
@@ -20,7 +20,7 @@ export default class LinkedList {
   }
 
   append(value) {
-    const newNode = new LinkedList(value);
+    const newNode = new LinkedListNode(value);
 
     if (!this.head) {
       this.head = newNode;
@@ -54,9 +54,9 @@ export default class LinkedList {
     if (currentNode !== null) {
       // If next node must be deleted then make next node to be a next next one.
       while (currentNode.next) {
-        if (this.compare.equal(currentNode.value, value)) {
-          deletedNode = currentNode;
-          currentNode = currentNode.next.next;
+        if (this.compare.equal(currentNode.next.value, value)) {
+          deletedNode = currentNode.next;
+          currentNode.next = currentNode.next.next;
         } else {
           currentNode = currentNode.next;
         }
@@ -65,7 +65,7 @@ export default class LinkedList {
 
     // Check if tail must be deleted.
     if (this.compare.equal(this.tail.value, value)) {
-      deletedNode = this.tail;
+      this.tail = currentNode;
     }
 
     return deletedNode;
@@ -104,7 +104,7 @@ export default class LinkedList {
 
     let currentNode = this.head;
 
-    while (currentNode) {
+    while (currentNode.next) {
       if (!currentNode.next.next) {
         currentNode.next = null;
       } else {
@@ -122,7 +122,7 @@ export default class LinkedList {
       return null;
     }
 
-    let deletedHead = this.head;
+    const deletedHead = this.head;
 
     if (this.head.next) {
       this.head = this.head.next;
@@ -157,6 +157,7 @@ export default class LinkedList {
       .map(node => node.toString(callback))
       .toString();
   }
+
   reverse() {
     let currNode = this.head;
     let prevNode = null;
